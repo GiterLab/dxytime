@@ -39,26 +39,28 @@ func TimeToTimeZoneString(time time.Time) (str string, err error) {
 
 // 字符串转换为用户设置的时区的时间
 func StringToTimeZoneTime(str, tz string) (t *time.Time, err error) {
+	t,err=StringToLocalTime(str)
 	loc, err := time.LoadLocation(tz)
 	if err != nil {
-		os.Exit(0)
+		return nil, errors.New("string to time zone time fail")
 	}
-	t, err = time.ParseInLocation(time_lay_out, str, loc)
+	str = time.Unix(t.Unix(), 0).In(loc).Format(time_lay_out)
+	tm, err := time.ParseInLocation(time_lay_out, str, loc)
 	if err != nil {
-		return nil, errors.New("string to time fail")
+		return nil, errors.New("string to time zone  time fail")
 	}
-	return &t, nil
+	return &tm, nil
 }
 
 // 字符串转换为本地时区的时间
 func StringToLocalTime(str string) (t *time.Time, err error) {
 	loc, err := time.LoadLocation("Local")
 	if err != nil {
-		os.Exit(0)
+		return nil, errors.New("string to local time fail")
 	}
-	t, err = time.ParseInLocation(time_lay_out, str, loc)
+	tm, err := time.ParseInLocation(time_lay_out, str, loc)
 	if err != nil {
-		return nil, errors.New("string to time fail")
+		return nil, errors.New("string to local time fail")
 	}
-	return &t, nil
+	return &tm, nil
 }
