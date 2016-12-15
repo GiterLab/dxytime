@@ -39,7 +39,7 @@ func TimeToTimeZoneString(time time.Time) (str string, err error) {
 
 // 字符串转换为用户设置的时区的时间
 func StringToTimeZoneTime(str, tz string) (t *time.Time, err error) {
-	t,err=StringToLocalTime(str)
+	t, err = StringToLocalTime(str)
 	loc, err := time.LoadLocation(tz)
 	if err != nil {
 		return nil, errors.New("string to time zone time fail")
